@@ -24,7 +24,7 @@ export default function App() {
         onDeleteItem={handelDelete}
         onToggleItem={handelToggleItme}
       />
-      <Stats />
+      <Stats items={items} />
     </div>
   );
 }
@@ -96,12 +96,24 @@ function Item({ item, onDeleteItem, onToggleItem }) {
     </li>
   );
 }
-function Stats() {
+function Stats({ items }) {
+  if (!items.length)
+    return (
+      <p className="stats">
+        <em>start adding some Items</em>
+      </p>
+    );
+  const numItems = items.length;
+  const packedItems = items.filter((item) => item.packed).length;
+  const persantage = Math.round((packedItems / numItems) * 100);
   return (
-    <em>
-      <footer className="stats">
-        you have X item on your list, and you are already packd
-      </footer>
-    </em>
+    <footer className="stats">
+      <em>
+        {persantage === 100
+          ? "you got everything ready to go"
+          : `have ${numItems} item on your list, and you are already
+          ${packedItems}, (${persantage}%) `}
+      </em>
+    </footer>
   );
 }
